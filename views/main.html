@@ -3,6 +3,13 @@
 <link rel="stylesheet" type="text/css" href="/css/front.css">
 {% endblock %}
 {% block content %}
+
+{% if isLogin %} 
+<div class='print_btn no_print' onclick="window.print();">
+	<i class='xi-print'></i>인쇄하기
+</div>
+{% endif %}
+
 <div class='container layout_width'>
 	<div class='main_title'>이력서</div>
 	<div class='info_box basic_info'>
@@ -51,7 +58,7 @@
 				<div class='text1'>경력</div>
 				{% if jobhistory %}
 				<div class='text2'>{{ jobhistory[0].company }}</div>
-				<div class='text3'>{{ '재직' if jobhistory[0].inOffice else '' }}</div>
+				<div class='text3'>{{ '재직' if jobhistory[0].inOffice else '퇴사' }}</div>
 				<div class='text3'>{{ jobhistory[0].period }}</div>
 				{% endif %}
 			</div>
@@ -113,7 +120,7 @@
 	</div>
 	{% endif %}
 	
-	{% if jobhistory[0] %}
+	{% if jobhistory %}
 	<div class='sub_title'>경력</div>
 	<div class='info_box info_box2 jobhistory'>
 		{% for item in jobhistory %}
@@ -132,8 +139,8 @@
 					<span class='tt3'>{{ item.company }}</span>
 					<span class='tt4'>{{ item.position }} {% if item.task %} {{ item.task }} {% endif %}</span>
 				</div>
-				{% if item.work2 %}
-				<div class='tt5'>{{ item.work2 }}</div>
+				{% if item.work2 %} 
+				<div class='tt5'>{{ item.work2 | safe }}</div>
 				{% endif %}
 			</div>
 		</div>
@@ -267,7 +274,7 @@
 			<div class='box box2'>
 				<div class='tt3'>{{ item.name }}</div>
 				{% if item.description2 %}
-				<div class='tt5'>{{ item.description2 | safe  }}</div>
+				<div class='tt5'>{{ item.description2 | safe }}</div>
 				{% endif %}
 			</div>
 		</div>
@@ -321,14 +328,14 @@
 	{% if introduction %}
 	<div class='sub_title'>자기소개서</div>
 	<div class='intro'>
-		{% for item in introduction %} 
+		{% for item in introduction %}
 		<div class='rows'>
 			<div class='tit'>{{ item.title }}</div>
-			<div class='desc'>{{ item.introduction2 | safe }}</div>			
+			<div class='desc'>{{ item.introduction2 | safe }}</div>
 		</div>
 		{% endfor %}
 	</div>
-	<!-- // intro -->	
+	<!--// intro -->
 	{% endif %}
 	
 	{% if basicinfo.benefit %}
@@ -360,17 +367,17 @@
 				{% endif %}
 			</td>
 		</tr>
-		{% if basicinfo.benefit4 or basicinfo.benefit5 %}
+		{% if basicinfo.benefit5 or basicinfo.benefit4 %}
 		<tr>
 			<th>병역사항</th>
 			<td colspan='3'>
 				[{{ basicinfo.military }}]
 				{% if basicinfo.military == '군필' %}
-				{{ basicinfo.militaryStartDate }} ~ {{ basicinfo.militaryEndDate }} {{ basicinfo.militaryRank }} 제대
+				{{ basicinfo.militaryStartDate }} ~ {{ basicinfo.military.EndDate }} {{ basicinfo.militaryRank }} 제대
 				{% endif %}
 			</td>
 			<th>장애여부</th>
-			<td class='last'>
+			<td class='last'> 
 				{% if basicinfo.handicapLevel %}
 				{{ basicinfo.handicapLevel }}
 				{% else %}
@@ -403,6 +410,7 @@
 		<tr>
 			<th>희망근무지</th>
 			<td class='last'>
+				{{ basicinfo.workLocation }}
 			</td>
 		</tr>
 	</table>
@@ -410,9 +418,7 @@
 	<div class='resume_guide'>
 		<div class='t1'>위의 모든 기재사항은 사실과 다름없음을 확인합니다.</div>
 		<div class='t2'>작성자 : {{ basicinfo.name }}</div>
-		<div class='t3'>
-			이 이력서는 {{ today }} 에 최종 업데이트된 이력서 입니다.
-		</div>
+		<div class='t3'>이 이력서는 {{ today }}에 최종 업데이트된 이력서 입니다.</div>
 	</div>
 </div>
 <!--// container -->

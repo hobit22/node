@@ -3,11 +3,11 @@ const fs = require('fs').promises;
 const contants = require('fs').constants;
 const path = require('path');
 
-String.prototype.nl2br = function(){
-	const newText = this.replace(/\\r\\n/g, "<br>");
+String.prototype.nl2br = function() {
+	const newText = this.replace(/\r\n/g, "<br>");
 	
 	return newText;
-}
+};
 
 /**
 * 이력서 Model
@@ -452,33 +452,34 @@ const resume = {
 					data[table].birthYear = birthYear;
 					data[table].age = age;
 					
+					// 취업우대사항 항목 포함 여부 
 					const benefit = data[table].benefit;
-					data[table].benefit1 = (benefit.indexOf("보훈대상") != -1)?true:false;
-					data[table].benefit2 = (benefit.indexOf("취업보호 대상") != -1)?true:false;
-					data[table].benefit3 = (benefit.indexOf("고용지원금 대상") != -1)?true:false;
-					data[table].benefit4 = (benefit.indexOf("장애") != -1)?true:false;
-					data[table].benefit5 = (benefit.indexOf("병역") != -1)?true:false;	
-				
+					data[table].benefit1 = (benefit.indexOf('보훈대상') != -1)?true:false;
+					data[table].benefit2 = (benefit.indexOf('취업보호 대상') != -1)?true:false;
+					data[table].benefit3 = (benefit.indexOf('고용지원금 대상') != -1)?true:false;
+					data[table].benefit4 = (benefit.indexOf('장애') != -1)?true:false;
+					data[table].benefit5 = (benefit.indexOf('병역') != -1)?true:false;
+					
 				} else { // 나머지는 레코드 여러개 
 					rows.forEach((v, i, _rows) => {
-						if( 'description' in v){
+						// description 컬럼 체크 
+						if ('description' in v) {
 							_rows[i].description2 = v.description.nl2br();
 						}
 						
-						if('introduction' in v) {
+						if ('introduction' in v) {
 							_rows[i].introduction2 = v.introduction.nl2br();
 						}
 						
-						if(table == 'jobhistory' && 'work' in v){
+						if (table == 'jobhistory' && 'work' in v) {
 							_rows[i].work2 = v.work.nl2br();
 						}
 						
-						//시작일 종료일이 있는 경우는 총 년, 개월 로 기간 계산
-						if(v.startDate && v.endDate){
-							const period  = resume.getPeriod(v.startDate, v.endDate);
-							_rows[i].period = periodStr;
+						// 시작일, 종료일이 있는 경우 -> 총 년, 월 기간으로 계산
+						if (v.startDate && v.endDate) {
+							const period = resume.getPeriod(v.startDate, v.endDate);
+							_rows[i].period = period.str;
 						}
-						
 					});
 					
 					data[table] = rows;
@@ -494,36 +495,44 @@ const resume = {
 			data['profile'] = "/profile/profile";
 		} catch (err) {}
 		
-		data.today = this.getToday();		
+		// 오늘 날짜 + 요일 
+		data.today = this.getToday();
+
 		return data;
 	},
-	
-	getToday : function (){
+	/**
+	* 오늘 날짜 요일 
+	*
+	*/
+	getToday : function() {
 		const date = new Date();
 		const year = date.getFullYear();
+		let month = date.getMonth() + 1;
+		month = (month < 10)?"0"+month:month;
 		
-		let month = date.getMonth() + 1; 
-		month =(month < 10)?"0"+month:month;
+		let day = date.getDate();
+		day = (day < 10)?"0"+day:day;
 		
-		let day =date.getDate();
-		day = (date < 10)?"0"+day:day;
-		
-		const yoils = ['일', '월', '화', '수', '목', '금', '토'];
+		const yoils = ["일", "월","화","수","목","금","토"]; // 0~6
 		const yoil = yoils[date.getDay()];
 		
-		const dateStr =`${year}년 ${month}월 ${day}일 (${yoil})`;
+		const dateStr = `${year}년 ${month}월 ${day}일 (${yoil})`;
 		
 		return dateStr;
 	},
-	
 	/**
-		년 개월 기간 계산
+	* 년, 월 기간 계산 
+	*
 	*/
-	getPeriod(startDate, endDate){
+	getPeriod : function(startDate, endDate) {
+		/**
+		년도 차이 X 12 + 현재 월 ->  총 개월수 
+		년.월
+		*/
 		endDate = endDate.split(".");
-		startDate = startDate.split(".");
-		
 		const endMonth = Number(endDate[0] * 12) + Number(endDate[1]);
+		
+		startDate = startDate.split(".");
 		const startMonth = Number(startDate[0] * 12) + Number(startDate[1]);
 		
 		const gap = endMonth - startMonth + 1;
@@ -531,10 +540,10 @@ const resume = {
 		const month = gap % 12;
 		
 		let str = "";
-		if(year) str += year + "년 ";
-		if(month) str += month + "개월";
+		if (year) str += year + "년 ";
+		if (month) str += month + "개월";
 		
-		return {year, month, str};
+		return { year, month, str };
 	}
 };
 
