@@ -473,8 +473,14 @@ const resume = {
 							_rows[i].work2 = v.work.nl2br();
 						}
 						
+						//시작일 종료일이 있는 경우는 총 년, 개월 로 기간 계산
+						if(v.startDate && v.endDate){
+							const period  = resume.getPeriod(v.startDate, v.endDate);
+							_rows[i].period = periodStr;
+						}
+						
 					});
-					console.log(rows);
+					
 					data[table] = rows;
 				}
 			}
@@ -488,8 +494,7 @@ const resume = {
 			data['profile'] = "/profile/profile";
 		} catch (err) {}
 		
-		data.today = this.getToday();
-		
+		data.today = this.getToday();		
 		return data;
 	},
 	
@@ -506,9 +511,30 @@ const resume = {
 		const yoils = ['일', '월', '화', '수', '목', '금', '토'];
 		const yoil = yoils[date.getDay()];
 		
-		const dateStr =`${year}년 ${month}월 ${day}일 ${yoil}`;
+		const dateStr =`${year}년 ${month}월 ${day}일 (${yoil})`;
 		
 		return dateStr;
+	},
+	
+	/**
+		년 개월 기간 계산
+	*/
+	getPeriod(startDate, endDate){
+		endDate = endDate.split(".");
+		startDate = startDate.split(".");
+		
+		const endMonth = Number(endDate[0] * 12) + Number(endDate[1]);
+		const startMonth = Number(startDate[0] * 12) + Number(startDate[1]);
+		
+		const gap = endMonth - startMonth + 1;
+		const year = Math.floor(gap / 12);
+		const month = gap % 12;
+		
+		let str = "";
+		if(year) str += year + "년 ";
+		if(month) str += month + "개월";
+		
+		return {year, month, str};
 	}
 };
 

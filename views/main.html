@@ -52,7 +52,7 @@
 				{% if jobhistory %}
 				<div class='text2'>{{ jobhistory[0].company }}</div>
 				<div class='text3'>{{ '재직' if jobhistory[0].inOffice else '' }}</div>
-				<div class='text3'></div>
+				<div class='text3'>{{ jobhistory[0].period }}</div>
 				{% endif %}
 			</div>
 			<div class='box box3'>
@@ -143,7 +143,7 @@
 	<!--// info_box -->
 	{% endif %}
 	
-	{% if intern[0] %}
+	{% if intern %}
 	<div class='sub_title'>인턴·대외활동</div>
 	<div class='info_box info_box2 intern'>
 		{% for item in intern %}
@@ -175,7 +175,7 @@
 	<!--// info_box -->
 	{% endif %}
 	
-	{% if education[0] %}
+	{% if education %}
 	<div class='sub_title'>교육이수</div>
 	<div class='info_box info_box2 education'>
 		{% for item in education %}
@@ -207,7 +207,7 @@
 	{% endif %}
 	
 	
-	{% if license[0] %}
+	{% if license %}
 	<div class='sub_title'>자격증</div>
 	<div class='info_box info_box2 license'>
 		{% for item in license %}
@@ -225,7 +225,7 @@
 	</div>
 	{% endif %}
 	
-	{% if award[0] %}
+	{% if award %}
 	<div class='sub_title'>수상</div>
 	<div class='info_box info_box2 award'>
 		{% for item in award %}
@@ -250,7 +250,7 @@
 	</div>
 	{% endif %}
 	
-	{% if overseas[0] %}
+	{% if overseas %}
 	<div class='sub_title'>해외경험</div>
 	<div class='info_box info_box2 overseas'>
 		{% for item in overseas %}
@@ -276,7 +276,7 @@
 	</div>
 	{% endif %}
 	
-	{% if language[0] %}
+	{% if language %}
 	<div class='sub_title'>어학</div>
 	<div class='info_box info_box2 language'>
 		{% for item in language %}
@@ -294,7 +294,7 @@
 	</div>
 	{% endif %}
 	
-	{% if portfolio[0] %}
+	{% if portfolio %}
 	<div class='sub_title'>포트폴리오</div>
 	<div class='info_box info_box2 portfolio'>
 		{% for item in portfolio %}
@@ -318,7 +318,7 @@
 	<!--// info_box -->
 	{% endif %}
 	
-	{% if introduction[0] %}
+	{% if introduction %}
 	<div class='sub_title'>자기소개서</div>
 	<div class='intro'>
 		{% for item in introduction %} 
@@ -411,7 +411,7 @@
 		<div class='t1'>위의 모든 기재사항은 사실과 다름없음을 확인합니다.</div>
 		<div class='t2'>작성자 : {{ basicinfo.name }}</div>
 		<div class='t3'>
-			이 이력서는 {{ date.today }}에 최종 업데이트된 이력서 입니다.
+			이 이력서는 {{ today }} 에 최종 업데이트된 이력서 입니다.
 		</div>
 	</div>
 </div>
