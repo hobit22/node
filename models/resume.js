@@ -445,6 +445,13 @@ const resume = {
 					
 					data[table].birthYear = birthYear;
 					data[table].age = age;
+					
+					const benefit = data[table].benefit;
+					data[table].benefit1 = (benefit.indexOf("보훈대상") != -1)?true:false;
+					data[table].benefit2 = (benefit.indexOf("취업보호 대상") != -1)?true:false;
+					data[table].benefit3 = (benefit.indexOf("고용지원금 대상") != -1)?true:false;
+					data[table].benefit4 = (benefit.indexOf("장애") != -1)?true:false;
+					data[table].benefit5 = (benefit.indexOf("병역") != -1)?true:false;
 				
 				} else { // 나머지는 레코드 여러개 
 					data[table] = rows;
