@@ -3,6 +3,12 @@ const fs = require('fs').promises;
 const contants = require('fs').constants;
 const path = require('path');
 
+String.prototype.nl2br = function(){
+	const newText = this.replace(/\\r\\n/g, "<br>");
+	
+	return newText;
+}
+
 /**
 * 이력서 Model
 *
@@ -451,9 +457,12 @@ const resume = {
 					data[table].benefit2 = (benefit.indexOf("취업보호 대상") != -1)?true:false;
 					data[table].benefit3 = (benefit.indexOf("고용지원금 대상") != -1)?true:false;
 					data[table].benefit4 = (benefit.indexOf("장애") != -1)?true:false;
-					data[table].benefit5 = (benefit.indexOf("병역") != -1)?true:false;
+					data[table].benefit5 = (benefit.indexOf("병역") != -1)?true:false;	
 				
 				} else { // 나머지는 레코드 여러개 
+					rows.forEach((v, i, _rows) => {
+						
+					}
 					data[table] = rows;
 				}
 			}
