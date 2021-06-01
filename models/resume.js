@@ -488,8 +488,28 @@ const resume = {
 			data['profile'] = "/profile/profile";
 		} catch (err) {}
 		
+		data.today = this.getToday();
+		
 		return data;
 	},
+	
+	getToday : function (){
+		const date = new Date();
+		const year = date.getFullYear();
+		
+		let month = date.getMonth() + 1; 
+		month =(month < 10)?"0"+month:month;
+		
+		let day =date.getDate();
+		day = (date < 10)?"0"+day:day;
+		
+		const yoils = ['일', '월', '화', '수', '목', '금', '토'];
+		const yoil = yoils[date.getDay()];
+		
+		const dateStr =`${year}년 ${month}월 ${day}일 ${yoil}`;
+		
+		return dateStr;
+	}
 };
 
 module.exports = resume;
