@@ -497,7 +497,7 @@ const resume = {
 		
 		// 오늘 날짜 + 요일 
 		data.today = this.getToday();
-
+		console.log(data);
 		return data;
 	},
 	/**
