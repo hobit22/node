@@ -461,8 +461,20 @@ const resume = {
 				
 				} else { // 나머지는 레코드 여러개 
 					rows.forEach((v, i, _rows) => {
+						if( 'description' in v){
+							_rows[i].description2 = v.description.nl2br();
+						}
 						
-					}
+						if('introduction' in v) {
+							_rows[i].introduction2 = v.introduction.nl2br();
+						}
+						
+						if(table == 'jobhistory' && 'work' in v){
+							_rows[i].work2 = v.work.nl2br();
+						}
+						
+					});
+					console.log(rows);
 					data[table] = rows;
 				}
 			}
